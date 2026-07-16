@@ -10,9 +10,9 @@ const investigatorOutputSchema = z.object({
             percentChange: z.number().nullable(),
         }),
     ),
-    likelyDrivers: z.array(z.string()),
-    watchouts: z.array(z.string()),
-    parentNote: z.string(),
+    likelyDrivers: z.array(z.string()).optional(),
+    watchouts: z.array(z.string()).optional(),
+    parentNote: z.string().optional(),
 });
 
 export default defineAgent({

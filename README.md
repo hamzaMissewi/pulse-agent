@@ -87,6 +87,13 @@ pnpm dlx vercel@latest connect attach <uid> --triggers --trigger-path /eve/v1/sl
 - `agent/sandbox/sandbox.ts` pins Vercel Sandbox with two vCPUs and `deny-all`
   network egress for each session.
 - `agent/subagents/investigator/` is the specialist anomaly-review subagent.
+- `agent/subagents/investigator/` is the specialist anomaly-review subagent.
+
+### Investigator Example Output
+
+See `agent/subagents/investigator/example_output.json` for a small example
+of the `investigator` subagent output that follows the `outputSchema` in
+`agent/subagents/investigator/agent.ts`.
 - `agent/schedules/monday-summary.ts` is the Monday weekly report prompt.
 - `agent/channels/slack.ts` shows the Vercel Connect-backed Slack channel.
 - `app/_components/agent-chat.tsx` is the web chat UI.

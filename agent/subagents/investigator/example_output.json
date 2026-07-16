@@ -1,0 +1,13 @@
+{
+    "findings": [
+        {
+            "metric": "revenue",
+            "severity": "headline",
+            "interpretation": "Revenue dropped sharply compared to last week",
+            "percentChange": -18.5
+        }
+    ],
+    "likelyDrivers": ["marketing_spend_reduction", "seasonal_variation"],
+    "watchouts": ["monitor refund rate", "check data ingestion pipeline"],
+    "parentNote": "Investigated initial anomaly; recommend running sandboxed analysis."
+}
