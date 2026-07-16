@@ -19,7 +19,7 @@ export default defineHook({
     },
 
     async "action.result"(event, ctx) {
-      const result = event.data.result;
+      const result = event.data.result as any;
       const toolName = result?.toolName ?? result?.subagentName ?? "unknown";
       console.info("[devscale] action result", {
         sessionId: ctx.session.id,
@@ -28,16 +28,18 @@ export default defineHook({
     },
 
     async "turn.failed"(event, ctx) {
+      const turnError = (event.data as any)?.errorText ?? "unknown error";
       console.error("[devscale] turn failed", {
         sessionId: ctx.session.id,
-        error: event.data.errorText ?? "unknown error",
+        error: turnError,
       });
     },
 
     async "session.failed"(event, ctx) {
+      const sessionError = (event.data as any)?.errorText ?? "unknown error";
       console.error("[devscale] session failed", {
         sessionId: ctx.session.id,
-        error: event.data.errorText ?? "unknown error",
+        error: sessionError,
       });
     },
   },
