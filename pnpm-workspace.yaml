@@ -4,3 +4,13 @@ allowBuilds:
   sharp: true
 minimumReleaseAgeExclude:
   - eve@0.20.0
+  - "@ai-sdk/*"
+  - "@rolldown/*"
+  - "@vercel/*"
+  - "@workflow/*"
+  - ai
+  - experimental-ai-sdk-code-mode
+  - eve
+  - nitro
+  - rolldown
+  - workflow

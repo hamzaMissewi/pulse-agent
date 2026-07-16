@@ -84,6 +84,23 @@ export default defineTool({
       ],
     };
   },
+  toModelOutput(output) {
+    return {
+      type: "json",
+      value: {
+        weekRanges: output.weekRanges,
+        findings: output.findings.map((f) => ({
+          metric: f.metric,
+          severity: f.severity,
+          interpretation: f.interpretation,
+          percentChange: f.percentChange,
+        })),
+        funnelChecks: output.funnelChecks,
+        likelyDrivers: output.likelyDrivers,
+        watchouts: output.watchouts,
+      },
+    };
+  },
 });
 
 function interpret(metric: MetricKey, absoluteChange: number, percentChange: number | null) {
