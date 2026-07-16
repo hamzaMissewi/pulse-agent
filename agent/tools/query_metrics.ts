@@ -7,13 +7,13 @@ import {
   previousWeek,
   queryMetricRows,
   type MetricKey,
-} from "../lib/devscale-data.js";
+} from "../lib/pulse-data.js";
 
 const metricSchema = z.enum(metricKeys);
 
 export default defineTool({
   description:
-    "Read DevScale business metrics for projects delivered, revenue, tasks completed, client satisfaction, and team utilization. Use before answering metric questions.",
+    "Read Pulse demo SaaS metrics for signups, activation, paid conversions, MRR, churn, and active accounts. Use before answering metric questions.",
   inputSchema: z.object({
     metrics: z.array(metricSchema).optional().describe("Metrics to include. Defaults to all."),
     startDate: z.string().optional().describe("Inclusive YYYY-MM-DD start date."),
@@ -31,7 +31,7 @@ export default defineTool({
     });
 
     return {
-      dataset: "DevScale business metrics",
+      dataset: "Pulse demo SaaS metrics",
       availableRange: {
         startDate: previousWeek.startDate,
         endDate: currentWeek.endDate,
@@ -45,9 +45,9 @@ export default defineTool({
       ),
       rows,
       notes: [
-        "Flow metrics (projectsDelivered, revenue, tasksCompleted) are summed across a period.",
-        "Stock metrics (clientsActive, clientSatisfaction, teamUtilization) use end-of-period values.",
-        "DevScale Digital Solutions — www.devscale.online",
+        "Flow metrics are summed across a period.",
+        "MRR and activeAccounts are end-of-period values for weekly comparison.",
+        "This is deterministic demo data for recording the Agent Stack walkthrough.",
       ],
     };
   },

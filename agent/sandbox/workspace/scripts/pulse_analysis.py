@@ -3,8 +3,8 @@ from html import escape
 from pathlib import Path
 
 input_path = Path("input.json")
-output_path = Path("devscale_analysis.json")
-chart_path = Path("devscale_chart.svg")
+output_path = Path("pulse_analysis.json")
+chart_path = Path("pulse_chart.svg")
 report_path = Path("report.md")
 
 payload = json.loads(input_path.read_text())
@@ -88,7 +88,7 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}"
   <polyline points="{polyline}" fill="none" stroke="#00c2a8" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
   {circles}
   {labels}
-  <text x="{padding}" y="{height - 12}" fill="#f2b84b" font-family="monospace" font-size="13">{escape(metric)} trend — DevScale Intelligence</text>
+  <text x="{padding}" y="{height - 12}" fill="#f2b84b" font-family="monospace" font-size="13">{escape(metric)} trend generated in Eve sandbox</text>
 </svg>'''
 
 takeaway = (
@@ -109,8 +109,8 @@ report = f"""# {title}
 Sandbox artifacts:
 - input: input.json
 - script: /workspace/scripts/{Path(__file__).name}
-- json: devscale_analysis.json
-- chart: devscale_chart.svg
+- json: pulse_analysis.json
+- chart: pulse_chart.svg
 """
 
 output = {

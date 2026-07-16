@@ -3,7 +3,7 @@ import { defineAgent } from 'eve';
 export default defineAgent({
     // model: 'openai/gpt-4o', // Or "anthropic/claude-3-5-sonnet"
     description:
-        'DevScale Intelligence analyzes business metrics — projects, revenue, tasks, client satisfaction — with tools, sandbox analysis, and a specialist investigator subagent.',
+        'Pulse analyzes SaaS business metrics with tools, sandbox analysis, and a specialist investigator subagent.',
     model: 'anthropic/claude-sonnet-5',
     reasoning: 'medium',
     compaction: {

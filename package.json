@@ -1,5 +1,5 @@
 {
-  "name": "devscale-intelligence",
+  "name": "pulse",
   "version": "0.0.0",
   "packageManager": "pnpm@11.7.0",
   "type": "module",
@@ -14,9 +14,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build:eve": "eve build",
     "dev:eve": "eve dev",
-    "start:eve": "eve start",
-    "eval": "eve eval",
-    "eval:smoke": "eve eval --filter smoke"
+    "start:eve": "eve start"
   },
   "dependencies": {
     "@radix-ui/react-use-controllable-state": "1.2.2",

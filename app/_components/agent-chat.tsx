@@ -30,16 +30,16 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getDashboardSnapshot } from "@/agent/lib/devscale-data";
+import { getDashboardSnapshot } from "@/agent/lib/pulse-data";
 import { AgentMessage } from "./agent-message";
 
-const AGENT_NAME = "DevScale Intelligence";
+const AGENT_NAME = "Pulse";
 const snapshot = getDashboardSnapshot();
 
 const suggestions = [
-  "How did revenue do this week compared to last week?",
-  "Run the weekly business report and have the investigator check anomalies.",
-  "Plot projects delivered for the last two weeks and explain the trend.",
+  "How did signups do this week compared to last week?",
+  "Run the weekly metrics report and have the investigator check anomalies.",
+  "Plot paid conversions for the last two weeks and explain the trend.",
 ];
 
 const stackMoments = [
@@ -84,7 +84,7 @@ export function AgentChat() {
     await agent.send({
       message: text,
       clientContext: {
-        demo: "DevScale Intelligence Agent Stack walkthrough",
+        demo: "Pulse Eve Agent Stack walkthrough",
         currentWeek: snapshot.currentWeek,
         previousWeek: snapshot.previousWeek,
       },
@@ -93,7 +93,7 @@ export function AgentChat() {
 
   const composer = (
     <PromptInput onSubmit={handleSubmit}>
-      <PromptInputTextarea placeholder="Ask DevScale Intelligence about revenue, projects, tasks, or satisfaction..." />
+      <PromptInputTextarea placeholder="Ask Pulse about signups, MRR, activation, or churn..." />
       <PromptInputSubmit onStop={agent.stop} status={agent.status} />
     </PromptInput>
   );
@@ -105,7 +105,7 @@ export function AgentChat() {
           <section className="dashboard-panel shrink-0 p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="eyebrow">DevScale Digital Solutions</p>
+                <p className="eyebrow">Vercel Agent Stack demo</p>
                 <h1 className="mt-3 text-4xl font-semibold leading-none tracking-normal">
                   {AGENT_NAME}
                 </h1>
@@ -113,9 +113,9 @@ export function AgentChat() {
               <StatusBadge status={agent.status} />
             </div>
             <p className="mt-5 text-sm leading-6 text-muted-foreground">
-              AI-powered business analyst that reads DevScale operational data,
-              runs sandboxed analysis, delegates anomaly checks, and streams the
-              durable run into this web channel.
+              A runnable Eve analyst that reads demo SaaS data, runs sandboxed
+              analysis, delegates anomaly checks, and streams the durable run
+              into this web channel.
             </p>
           </section>
 
@@ -138,7 +138,7 @@ export function AgentChat() {
               <div>
                 <p className="eyebrow">Live Eve session</p>
                 <h2 className="mt-1 text-xl font-semibold tracking-normal">
-                  Ask DevScale Intelligence about business performance
+                  Ask Pulse anything about the two-week dataset
                 </h2>
               </div>
               <Button
@@ -186,12 +186,12 @@ export function AgentChat() {
                   <ActivityIcon className="size-7" />
                 </div>
                 <h3 className="mt-6 text-3xl font-semibold tracking-normal">
-                  Start with a question about DevScale's business metrics.
+                  Start with the hero prompt from the video.
                 </h3>
                 <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-                  DevScale Intelligence will query operational data, run a
-                  sandboxed analysis step, delegate investigation when the
-                  numbers move, and return a summary with concrete dates.
+                  Pulse will query deterministic SaaS data, run a sandboxed
+                  analysis step, delegate investigation when the numbers move,
+                  and return a recording-ready summary with concrete dates.
                 </p>
               </div>
             </div>
@@ -359,7 +359,7 @@ function Timeline({
   if (isEmpty || visible.length === 0) {
     return (
       <div className="flex min-h-48 flex-1 items-center justify-center rounded-md border border-dashed border-border text-center text-sm text-muted-foreground">
-        Session events will appear here while DevScale Intelligence works.
+        Session events will appear here while Pulse works.
       </div>
     );
   }
@@ -407,8 +407,8 @@ function toTimelineItem(
         eyebrow: "session",
         title: "Agent runtime online",
         detail: modelId
-          ? `DevScale Intelligence is running on ${modelId}.`
-          : "DevScale Intelligence opened a durable Eve session.",
+          ? `Pulse is running on ${modelId}.`
+          : "Pulse opened a durable Eve session.",
         meta: gitSha ? gitSha.slice(0, 7) : undefined,
         tone: "teal",
         icon: ActivityIcon,
@@ -462,7 +462,7 @@ function toTimelineItem(
         key,
         eyebrow: "subagent",
         title: "Investigator delegated",
-        detail: "DevScale Intelligence handed the anomaly check to a specialist child agent.",
+        detail: "Pulse handed the anomaly check to a specialist child agent.",
         meta: readChildSession(event.data),
         tone: "gold",
         icon: BotIcon,
@@ -507,7 +507,7 @@ function toTimelineItem(
         title: "Final response ready",
         detail: truncate(
           readString(asRecord(event.data)?.message) ??
-            "DevScale Intelligence finished the answer.",
+            "Pulse finished the answer.",
           110,
         ),
         tone: "teal",
@@ -518,7 +518,7 @@ function toTimelineItem(
         key,
         eyebrow: "ready",
         title: "Session parked",
-        detail: "DevScale Intelligence is waiting durably for the next turn.",
+        detail: "Pulse is waiting durably for the next turn.",
         tone: "purple",
         icon: WorkflowIcon,
       };
@@ -649,7 +649,7 @@ function readToolResultDetail(data: unknown) {
   }
 
   if (name === "load_skill") {
-    return "DevScale Intelligence loaded metric definitions before answering.";
+    return "Pulse loaded metric definitions before answering.";
   }
 
   if (name === "bash") {
@@ -754,24 +754,21 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 function labelForMetric(metric: string) {
   const labels: Record<string, string> = {
-    clientSatisfaction: "Client satisfaction",
-    projectsDelivered: "Projects delivered",
-    revenue: "Revenue",
-    teamUtilization: "Team utilization",
+    activated: "Activated",
+    mrr: "MRR",
+    paidConversions: "Paid conversions",
+    signups: "Signups",
   };
   return labels[metric] ?? metric;
 }
 
 function formatValue(metric: string, value: number) {
-  if (metric === "revenue") {
+  if (metric === "mrr") {
     return new Intl.NumberFormat("en-US", {
       currency: "USD",
       maximumFractionDigits: 0,
       style: "currency",
     }).format(value);
-  }
-  if (metric === "teamUtilization") {
-    return `${value}%`;
   }
   return new Intl.NumberFormat("en-US").format(value);
 }

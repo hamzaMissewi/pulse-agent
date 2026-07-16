@@ -1,26 +1,26 @@
 ---
-description: Use when answering DevScale business metric, week-over-week, growth, revenue, projects, satisfaction, or charting questions.
+description: Use when answering Pulse SaaS metric, week-over-week, growth, churn, revenue, or charting questions.
 ---
 
-# DevScale Metric Definitions
+# Pulse Metric Definitions
 
 Use these definitions before interpreting business performance.
 
 ## Metrics
 
-- `projectsDelivered`: projects delivered or milestones completed during the period. Aggregate by summing daily rows.
-- `clientsActive`: active client accounts at end of period. Use the final day value for weekly comparisons.
-- `revenue`: daily revenue in USD from client engagements. Aggregate by summing daily rows.
-- `tasksCompleted`: development tasks (features, fixes, integrations) completed during the period. Aggregate by summing daily rows.
-- `clientSatisfaction`: average client satisfaction score (0-100) at end of period. Use the final day value for weekly comparisons.
-- `teamUtilization`: team utilization percentage across active projects at end of period. Use the final day value for weekly comparisons.
+- `signups`: new workspace accounts created during the period. Aggregate by summing daily rows.
+- `activated`: new workspaces that completed the activation checklist during the period. Aggregate by summing daily rows.
+- `paidConversions`: workspaces that moved from trial to paid during the period. Aggregate by summing daily rows.
+- `mrr`: month recurring revenue in USD at the end of the day or period. For weekly comparisons, use the final day of each week.
+- `churnedAccounts`: paid workspaces that cancelled during the period. Aggregate by summing daily rows.
+- `activeAccounts`: active paid workspaces at the end of the day or period. For weekly comparisons, use the final day of each week.
 
 ## Comparison rules
 
 - The demo "current week" is 2026-06-29 through 2026-07-05.
 - The demo "previous week" is 2026-06-22 through 2026-06-28.
-- For flow metrics such as projects, revenue, and tasks, compare weekly sums.
-- For stock metrics such as clientsActive, satisfaction, and utilization, compare the end-of-period value.
+- For flow metrics such as signups and conversions, compare weekly sums.
+- For stock metrics such as MRR and active accounts, compare the end-of-period value.
 - Always show the absolute change and the percentage change when there is a non-zero previous value.
 
 ## Charting rules

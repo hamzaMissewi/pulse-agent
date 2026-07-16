@@ -1,15 +1,15 @@
-# DevScale Business Dataset
+# Pulse Demo Dataset
 
-The DevScale business dataset covers 2026-06-22 through 2026-07-05.
+The Pulse demo dataset covers 2026-06-22 through 2026-07-05.
 
 Columns:
 
 - `date`: daily ISO date.
-- `projectsDelivered`: projects delivered or milestones completed that day.
-- `clientsActive`: active client accounts at end of day.
-- `revenue`: daily revenue in USD from client engagements.
-- `tasksCompleted`: development tasks completed that day.
-- `clientSatisfaction`: client satisfaction score (0-100) at end of day.
-- `teamUtilization`: team utilization percentage at end of day.
+- `signups`: new workspaces created that day.
+- `activated`: new workspaces that completed activation that day.
+- `paidConversions`: trial workspaces that converted to paid that day.
+- `mrr`: end-of-day monthly recurring revenue in USD.
+- `churnedAccounts`: paid workspaces that cancelled that day.
+- `activeAccounts`: end-of-day active paid workspaces.
 
 For weekly comparisons, use 2026-06-22 through 2026-06-28 as the previous week and 2026-06-29 through 2026-07-05 as the current week.

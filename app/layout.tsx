@@ -20,8 +20,8 @@ const mono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevScale Intelligence | AI Business Analyst",
-  description: "DevScale's AI-powered business intelligence agent — built with Vercel Eve Agent Stack.",
+  title: "Pulse | Eve Agent Stack Demo",
+  description: "A runnable Eve analytics agent showcasing Vercel Agent Stack.",
 };
 
 export default function RootLayout({ children }: { readonly children: ReactNode }) {

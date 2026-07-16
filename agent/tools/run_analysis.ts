@@ -11,13 +11,13 @@ import { createSandboxPaths } from "../lib/run-analysis/sandbox-paths";
 
 export default defineTool({
   description:
-    "Run a deterministic Python analysis script inside the Eve sandbox for DevScale metric rows. Use for comparisons and chart-ready trend output.",
+    "Run a deterministic Python analysis script inside the Eve sandbox for Pulse metric rows. Use for comparisons and chart-ready trend output.",
   inputSchema: z.object({
     title: z.string().min(1),
     metric: z
       .string()
       .min(1)
-      .describe("Metric field to analyze, for example revenue or tasksCompleted."),
+      .describe("Metric field to analyze, for example signups or mrr."),
     rows: z.array(z.record(z.string(), primitiveValue)).min(1),
     labelField: z
       .string()

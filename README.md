@@ -1,12 +1,12 @@
-# DevScale Intelligence: AI Business Analyst
+# Pulse: Vercel Eve Agent Stack Demo
 
-DevScale Intelligence is an AI-powered business metrics analyst for
-[DevScale Digital Solutions](https://www.devscale.online). It answers questions
-about projects delivered, revenue, tasks completed, client satisfaction, and team
-utilization — with sandboxed Python analysis, anomaly detection via a specialist
-subagent, and scheduled weekly reports.
+Pulse is the full demo app from the video script, "Vercel's Agent Stack
+explained." It is a runnable SaaS metrics analyst built with eve, Vercel AI
+Gateway, Vercel Sandbox, Vercel Workflow, Vercel Connect, and a Next.js web chat.
 
-Built with the [Eve framework](https://eve.dev) and Vercel's Agent Stack.
+Use this repo if you want to follow along with the video instead of just watching
+slides. Pulse can answer metrics questions, call tools, run Python in an isolated
+sandbox, delegate anomaly checks to a subagent, and run a scheduled weekly report.
 
 ## What You Need
 
@@ -46,10 +46,10 @@ Run the web demo:
 pnpm dev
 ```
 
-Open `http://localhost:3000` and ask DevScale Intelligence something like:
+Open `http://localhost:3000` and ask Pulse something like:
 
 ```txt
-How did revenue do this week compared to last week?
+How did signups do this week compared to last week?
 ```
 
 ## Optional Slack Demo
@@ -69,20 +69,19 @@ To use your own connector, set this in `.env.local` and in your Vercel project:
 SLACK_CONNECTOR=slack/your-connector
 ```
 
-The Eve Slack docs cover the full Connect setup:
+The eve Slack docs cover the full Connect setup:
 
 ```bash
 pnpm dlx vercel@latest connect create slack --triggers
 pnpm dlx vercel@latest connect attach <uid> --triggers --trigger-path /eve/v1/slack --yes
 ```
 
-## Architecture
+## What To Show In The Video
 
-- `agent/` is the filesystem-first Eve agent.
+- `agent/` is the filesystem-first eve agent.
 - `agent/agent.ts` picks the AI Gateway model and runtime limits.
-- `agent/instructions.md` gives DevScale Intelligence its analyst behavior.
-- `agent/lib/devscale-data.ts` holds the DevScale business metrics dataset.
-- `agent/tools/query_metrics.ts` reads the metrics dataset.
+- `agent/instructions.md` gives Pulse its analyst behavior and demo framing.
+- `agent/tools/query_metrics.ts` reads the local SaaS metrics dataset.
 - `agent/tools/run_analysis.ts` runs chart-ready analysis through the sandbox.
 - `agent/sandbox/sandbox.ts` pins Vercel Sandbox with two vCPUs and `deny-all`
   network egress for each session.
@@ -96,7 +95,7 @@ of the `investigator` subagent output that follows the `outputSchema` in
 `agent/subagents/investigator/agent.ts`.
 - `agent/schedules/monday-summary.ts` is the Monday weekly report prompt.
 - `agent/channels/slack.ts` shows the Vercel Connect-backed Slack channel.
-- `app/_components/agent-chat.tsx` is the web chat UI.
+- `app/_components/agent-chat.tsx` is the recording-friendly web chat.
 
 ## Trigger The Weekly Report Locally
 
@@ -111,6 +110,9 @@ Then, in another terminal:
 ```bash
 curl -X POST http://localhost:3000/eve/v1/dev/schedules/monday-summary
 ```
+
+The route returns the started session IDs. You can watch the run in the web UI,
+terminal logs, or by streaming the session route.
 
 ## Useful Commands
 
@@ -135,11 +137,3 @@ demo default.
 
 Before using private customer data, replace the public demo auth in
 `agent/channels/eve.ts` with your real route or app auth policy.
-
-## About DevScale
-
-[DevScale Digital Solutions](https://www.devscale.online) is a digital
-transformation company based in Tunisia, serving international clients with
-custom SaaS, web development, cloud engineering, AI integration, and IT
-consulting services. Notable clients include Unilumin, Carrefour, Shell, Nissan,
-Balkan Investment Group, and Globalnet.

@@ -8,13 +8,13 @@ import {
   metricKeys,
   previousWeek,
   type MetricKey,
-} from "../../../lib/devscale-data.js";
+} from "../../../lib/pulse-data.js";
 
 const metricSchema = z.enum(metricKeys);
 
 export default defineTool({
   description:
-    "Investigate week-over-week DevScale business metric movement and return notable changes, supported drivers, and watchouts.",
+    "Investigate week-over-week Pulse metric movement and return notable changes, supported drivers, and watchouts.",
   inputSchema: z.object({
     question: z.string().optional(),
     metrics: z.array(metricSchema).optional().describe("Metrics to inspect. Defaults to all."),
@@ -44,10 +44,10 @@ export default defineTool({
       })
       .sort((left, right) => Math.abs(right.percentChange ?? 0) - Math.abs(left.percentChange ?? 0));
 
-    const deliveryRatePrevious = rate(previous.projectsDelivered, previous.clientsActive);
-    const deliveryRateCurrent = rate(current.projectsDelivered, current.clientsActive);
-    const taskRatePrevious = rate(previous.tasksCompleted, previous.projectsDelivered);
-    const taskRateCurrent = rate(current.tasksCompleted, current.projectsDelivered);
+    const activationRatePrevious = rate(previous.activated, previous.signups);
+    const activationRateCurrent = rate(current.activated, current.signups);
+    const conversionRatePrevious = rate(previous.paidConversions, previous.signups);
+    const conversionRateCurrent = rate(current.paidConversions, current.signups);
 
     return {
       question,
@@ -58,28 +58,28 @@ export default defineTool({
       thresholdPercent,
       findings,
       funnelChecks: {
-        deliveryRate: {
-          previous: deliveryRatePrevious,
-          current: deliveryRateCurrent,
-          pointChange: deliveryRateCurrent - deliveryRatePrevious,
+        activationRate: {
+          previous: activationRatePrevious,
+          current: activationRateCurrent,
+          pointChange: activationRateCurrent - activationRatePrevious,
         },
-        taskEfficiency: {
-          previous: taskRatePrevious,
-          current: taskRateCurrent,
-          pointChange: taskRateCurrent - taskRatePrevious,
+        paidConversionRate: {
+          previous: conversionRatePrevious,
+          current: conversionRateCurrent,
+          pointChange: conversionRateCurrent - conversionRatePrevious,
         },
       },
       likelyDrivers: buildDrivers({
+        activationRateCurrent,
+        activationRatePrevious,
+        conversionRateCurrent,
+        conversionRatePrevious,
         current,
-        deliveryRateCurrent,
-        deliveryRatePrevious,
         previous,
-        taskEfficiencyCurrent: taskRateCurrent,
-        taskEfficiencyPrevious: taskRatePrevious,
       }),
       watchouts: [
-        "This dataset covers only two weeks, so seasonality and campaign attribution are not available.",
-        "Client satisfaction and team utilization are point-in-time snapshots, not smoothed averages.",
+        "This demo dataset covers only two weeks, so seasonality and campaign attribution are not available.",
+        "Churn is represented as cancelled account count, not a rate with beginning-period paid accounts.",
         "Treat driver language as supported interpretation, not causal proof.",
       ],
     };
@@ -108,49 +108,48 @@ function interpret(metric: MetricKey, absoluteChange: number, percentChange: num
   const magnitude =
     percentChange === null ? `${Math.abs(absoluteChange).toLocaleString()} units` : formatPercent(Math.abs(percentChange));
 
+  if (metric === "churnedAccounts") {
+    return `Churned accounts ${direction} by ${magnitude}; lower is better for this metric.`;
+  }
+
   return `${metric} ${direction} by ${magnitude} week over week.`;
 }
 
 function buildDrivers({
+  activationRateCurrent,
+  activationRatePrevious,
+  conversionRateCurrent,
+  conversionRatePrevious,
   current,
-  deliveryRateCurrent,
-  deliveryRatePrevious,
   previous,
-  taskEfficiencyCurrent,
-  taskEfficiencyPrevious,
 }: {
+  readonly activationRateCurrent: number;
+  readonly activationRatePrevious: number;
+  readonly conversionRateCurrent: number;
+  readonly conversionRatePrevious: number;
   readonly current: ReturnType<typeof getWeeklyRows>[number];
-  readonly deliveryRateCurrent: number;
-  readonly deliveryRatePrevious: number;
   readonly previous: ReturnType<typeof getWeeklyRows>[number];
-  readonly taskEfficiencyCurrent: number;
-  readonly taskEfficiencyPrevious: number;
 }) {
   const drivers: string[] = [];
 
-  if (current.projectsDelivered > previous.projectsDelivered && current.clientsActive > previous.clientsActive) {
-    drivers.push("Project delivery volume and active clients both rose, showing organic growth.");
+  if (current.signups > previous.signups && current.activated > previous.activated) {
+    drivers.push("Top-of-funnel volume and activated workspaces both rose, so signup growth did not come alone.");
   }
 
-  if (deliveryRateCurrent >= deliveryRatePrevious) {
-    drivers.push("Delivery rate per client held or improved while client count increased.");
+  if (activationRateCurrent >= activationRatePrevious) {
+    drivers.push("Activation rate held or improved while signup volume increased.");
   } else {
-    drivers.push("Delivery rate per client softened, so growth may be stretching team capacity.");
+    drivers.push("Activation rate softened, so some signup growth may not be reaching activation quality.");
   }
 
-  if (taskEfficiencyCurrent >= taskEfficiencyPrevious) {
-    drivers.push("Tasks per project held or improved, supporting delivery throughput.");
+  if (conversionRateCurrent >= conversionRatePrevious) {
+    drivers.push("Paid conversion rate held or improved, supporting the MRR increase.");
   } else {
-    drivers.push("Tasks per project softened, suggesting more complex engagements or context switching.");
+    drivers.push("Paid conversion rate softened, so MRR growth is more volume-led than efficiency-led.");
   }
 
-  if (current.clientSatisfaction >= previous.clientSatisfaction) {
-    drivers.push("Client satisfaction improved during the growth period.");
-  }
-
-  if (current.revenue > previous.revenue) {
-    const revenueGrowth = ((current.revenue - previous.revenue) / previous.revenue) * 100;
-    drivers.push(`Revenue grew ${revenueGrowth.toFixed(1)}% week over week, indicating stronger engagement mix.`);
+  if (current.churnedAccounts <= previous.churnedAccounts) {
+    drivers.push("Churned account count decreased or stayed controlled during the MRR expansion.");
   }
 
   return drivers;
