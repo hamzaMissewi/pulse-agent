@@ -1,0 +1,16 @@
+.DS_Store
+.env*
+!.env.example
+.vercel
+node_modules
+.eve
+.workflow-data
+.next
+.output
+.nitro
+dist
+*.tsbuildinfo
+**/*ignore*
+**/*copy*
+
+!.vercelignore
